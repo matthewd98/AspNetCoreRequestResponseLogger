@@ -20,6 +20,7 @@ namespace RequestResponseLoggerMiddleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
+            // Middleware is enabled only when the EnableRequestResponseLogging config value is set.
             if (_isRequestResponseLoggingEnabled)
             {
                 Console.WriteLine($"HTTP request information:\n" +
@@ -36,6 +37,7 @@ namespace RequestResponseLoggerMiddleware
                 using var newResponseBody = new MemoryStream();
                 httpContext.Response.Body = newResponseBody;
 
+                // Call the next middleware in the pipeline
                 await _next(httpContext);
 
                 newResponseBody.Seek(0, SeekOrigin.Begin);
